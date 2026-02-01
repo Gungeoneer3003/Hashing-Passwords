@@ -94,29 +94,34 @@ Steps:
 4. Add the has to the dictionary (hash -> message)
 5. If there's no conflict, repeat
 '''
-def partC(bitCount):
-    Dict = {}
-    t1 = time.time()
+def partC():
+    print("Part C.")
+    print("Bits\tTime\tEntries")
+    for bitCount in range(8, 51, 2):
+        Dict = {}
+        t1 = time.time()
 
-    while (True):
-        m = get_random_bytes(32).hex()
+        while (True):
+            m = get_random_bytes(32).hex()
 
-        h = Digest(m, bits=bitCount)
+            h = Digest(m, bits=bitCount)
 
-        if h in Dict:
-            break
-        else:
-            Dict[h] = m
+            if h in Dict:
+                break
+            else:
+                Dict[h] = m
 
-    if(SAYCOLLISION):
-        print("Collision found! These two both produce a hash of", h)
-        print(m)
-        print(Dict[h])
+        if (SAYCOLLISION):
+            print("Collision found! These two both produce a hash of", h)
+            print(m)
+            print(Dict[h])
 
-    t2 = time.time()
-    timediff = t2 - t1
+        t2 = time.time()
+        timediff = t2 - t1
 
-    print(f"{bitCount:2d} Bits -\t {time.strftime("%H:%M:%S", time.gmtime(timediff))} {len(Dict):5d} entries")
+        print(f"{bitCount:2d} \t {time.strftime("%H:%M:%S", time.gmtime(timediff))} \t {len(Dict):9d}")
+
+    print("\n----------------")
     return
 
 
@@ -126,10 +131,7 @@ def main():
         partA()
         partB()
 
-    print("Part C.")
-    for i in range(8,50,2):
-        partC(i)
-    print("\n----------------")
+    partC()
 
 if __name__ == '__main__':
     main()
