@@ -130,8 +130,8 @@ def main():
     if (not(PLEASESKIP)):
         partA()
         partB()
+        partC()
 
-    partC()
 
 if __name__ == '__main__':
     main()
