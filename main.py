@@ -96,12 +96,12 @@ Steps:
 '''
 def partC(bitCount):
     Dict = {}
-    t1 = time.localtime(0)
+    t1 = time.time()
 
     while (True):
         m = get_random_bytes(32).hex()
 
-        h = Digest(m, bits=BITS)
+        h = Digest(m, bits=bitCount)
 
         if h in Dict:
             break
@@ -113,10 +113,10 @@ def partC(bitCount):
         print(m)
         print(Dict[h])
 
-    t2 = time.localtime(0)
+    t2 = time.time()
     timediff = t2 - t1
 
-    print(f"{bitCount:2d} Bits - {time.strftime("%H:M:S"), time.gmtime(timediff)} ({len(Dict)} entries)")
+    print(f"{bitCount:2d} Bits -\t {time.strftime("%H:%M:%S", time.gmtime(timediff))} {len(Dict):5d} entries")
     return
 
 
@@ -127,7 +127,7 @@ def main():
         partB()
 
     print("Part C.")
-    for i in range(8,0,2):
+    for i in range(8,50,2):
         partC(i)
     print("\n----------------")
 
