@@ -10,7 +10,6 @@ def printDigest(str):
     sha256_hash = SHA256.new()
     sha256_hash.update(str.encode())
     digest = sha256_hash.digest()
-    print("\nThe result is as follows:")
     print(digest.hex())
 
 '''
@@ -44,6 +43,7 @@ def partA():
     else:
         str = input("Enter some arbitrary input:\n")
 
+    print("\nThe result is as follows:")
     printDigest(str)
     print("\n----------------")
 
@@ -57,6 +57,14 @@ def partB():
     str2 = HammingEquivalent(str1, 1)
     print("The first string is:", str1)
     print("The second string is:", str2)
+
+    print("")
+
+    print("For the first string: ", end="")
+    printDigest(str1)
+
+    print("For the second string: ", end="")
+    printDigest(str2)
 
     print("\n----------------")
 
