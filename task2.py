@@ -46,28 +46,37 @@ def getWords():
             L.append(i)
     return L
 
+def findPassword(words, salt, value):
+    for i in words:
+        hash = bcrypt.hashpw(i.encode('utf-8'), salt.encode('utf-8'))
+        if (hash == value):
+            return i
 
+    raise Exception("Something's wrong, no password found")
 
 
 def main():
     #Task 2
     UnexpectedParty, count = loadData()
     print("In this unexpected party, there are", count)
-
     users, WF, salts, values = divideLines(UnexpectedParty)
-    times = []
 
     words = getWords()
 
+    print("\nNow for the password cracking:")
     for i in range(count):
         t1 = time.time()
 
-        findPassword(words, salts[i], values[i])
+        print("Salt is", salts[i], "\tlen =", len(salts[i]))
+        print("Value is", values[i])
+
+        pw = findPassword(words, salts[i], values[i])
 
         t2 = time.time()
         timediff = round(t2 - t1/60, 1)
-        print("The attack on", users[i],"took", timediff, "minutes")
 
+        pw = pw + ")"
+        print("The attack on", users[i],"took", timediff, "minutes. (PW =", pw)
 
 
 if __name__ == '__main__':
