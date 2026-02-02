@@ -1,11 +1,11 @@
 from Crypto.Hash import SHA256
 from Crypto.Random import random, get_random_bytes
 import time
+import bcrypt
 
 STR = "Stormlight Archive"
-FLAG = True
+INPUTFLAG = True
 PLEASESKIP = False
-BITS = 8
 SAYCOLLISION = False
 
 def Digest(str, bits = 256):
@@ -49,7 +49,7 @@ def countMatches(a, b):
 
 def partA():
     print("Part A.")
-    if (FLAG):
+    if (INPUTFLAG):
         str = STR
     else:
         str = input("Enter some arbitrary input:\n")
@@ -60,7 +60,7 @@ def partA():
 
 def partB():
     print("Part B.")
-    if (FLAG):
+    if (INPUTFLAG):
         str1 = STR
     else:
         str1 = input("Enter some arbitrary input:\n")
@@ -130,7 +130,8 @@ def main():
     if (not(PLEASESKIP)):
         partA()
         partB()
-        partC()
+
+    partC()
 
 
 if __name__ == '__main__':
