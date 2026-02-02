@@ -14,7 +14,7 @@ def loadData():
     count = 0
     with open(FILE, 'r') as file:
         for line in file:
-            print("Reading in:", line.strip())
+            #print("Reading in:", line.strip())
             L.append(line.strip())
             count += 1
     return L, count
@@ -25,16 +25,16 @@ def divideLines(L):
     salts = []
     values = []
 
-    #Note: All users use 2b (or bcrypt) so this can be forgotten
-    #If there was an inconsistency then it would matter
     for i in L:
         input = i.split("$")
+
         users.append(input[0])
-        WF.append(int(input[2]))
-        salts.append(input[3][:22])
         values.append(input[3][22:])
 
-    return users, WF, salts, values
+        salt = "$2b$" + input[2] + "$" + input[3][:22]
+        salts.append(salt)
+
+    return users, salts, values
 
 
 def getWords():
@@ -59,16 +59,13 @@ def main():
     #Task 2
     UnexpectedParty, count = loadData()
     print("In this unexpected party, there are", count)
-    users, WF, salts, values = divideLines(UnexpectedParty)
+    users, salts, values = divideLines(UnexpectedParty)
 
     words = getWords()
 
     print("\nNow for the password cracking:")
     for i in range(count):
         t1 = time.time()
-
-        print("Salt is", salts[i], "\tlen =", len(salts[i]))
-        print("Value is", values[i])
 
         pw = findPassword(words, salts[i], values[i])
 
@@ -78,6 +75,7 @@ def main():
         pw = pw + ")"
         print("The attack on", users[i],"took", timediff, "minutes. (PW =", pw)
 
+    print("All passwords have been broken and printed above")
 
 if __name__ == '__main__':
     main()
