@@ -21,7 +21,6 @@ def loadData():
 
 def divideLines(L):
     users = []
-    WF = []
     salts = []
     values = []
 
@@ -29,10 +28,11 @@ def divideLines(L):
         input = i.split("$")
 
         users.append(input[0])
-        values.append(input[3][22:])
+        allButUser = i[len(input[0]):]
+        values.append(allButUser.encode('utf-8'))
 
         salt = "$2b$" + input[2] + "$" + input[3][:22]
-        salts.append(salt)
+        salts.append(salt.encode('utf-8'))
 
     return users, salts, values
 
@@ -48,7 +48,11 @@ def getWords():
 
 def findPassword(words, salt, value):
     for i in words:
-        hash = bcrypt.hashpw(i.encode('utf-8'), salt.encode('utf-8'))
+        #print(i, end="\t")
+        hash = bcrypt.hashpw(i.encode('utf-8'), salt)
+        #print(hash)
+        #print(i, end="\t")
+        #print(value.encode('utf-8'))
         if (hash == value):
             return i
 
@@ -56,12 +60,20 @@ def findPassword(words, salt, value):
 
 
 def main():
+
     #Task 2
     UnexpectedParty, count = loadData()
     print("In this unexpected party, there are", count)
     users, salts, values = divideLines(UnexpectedParty)
 
     words = getWords()
+    #print("The first word of words is", words[0])
+    #salt = bcrypt.gensalt()
+    #hash = bcrypt.hashpw(words[0].encode('utf-8'), salt)
+
+    #print(salt)
+    #print(hash)
+
 
     print("\nNow for the password cracking:")
     for i in range(count):
@@ -70,7 +82,7 @@ def main():
         pw = findPassword(words, salts[i], values[i])
 
         t2 = time.time()
-        timediff = round(t2 - t1/60, 1)
+        timediff = round((t2 - t1)/60, 1)
 
         pw = pw + ")"
         print("The attack on", users[i],"took", timediff, "minutes. (PW =", pw)
