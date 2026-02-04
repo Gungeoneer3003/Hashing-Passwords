@@ -135,4 +135,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print(bcrypt.hashpw(b"registrationsucks", b"$2b$08$J9FW66ZdPI2nrIMcOxFYI."))
     main()
